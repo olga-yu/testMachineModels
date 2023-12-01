@@ -6,15 +6,19 @@ import matplotlib.pyplot as plt
 import pandas as pd
 # This DecisionTreeRegression algorithm will work with real data produced by MSc-IoT project by Hemanth Kumar
 # Load the dataset
-dataset = pd.read_csv(r'../../Data/realdata.csv', parse_dates=['Time'])
+dataset = pd.read_csv(r'../../Data/realdata2.csv', parse_dates=['Time'])
+
+dataset = dataset.drop_duplicates()
+# Fill missing values with a specific value (e.g., 0)
+#dataset= dataset.fillna(0)
 
 # Select the relevant features
-feature_cols = ['Time',  'Temperature_SENSOR_DATA.mean']
+feature_cols = ['Temperature_SENSOR_mean','Pressure_SENSOR_mean','Altitude_SENSOR_mean']
 #feature_cols = ['Time',  'Temperature_SENSOR_DATA.mean',  'Pressure_SENSOR_DATA.mean', 'Altitude_SENSOR_DATA.mean']
 
 # Extract the features and target variable
 X = dataset[feature_cols]
-y = dataset['Predicted_temperature']
+y = dataset['TimeGroup']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=None)
 
@@ -29,7 +33,7 @@ y_pred = regr.predict(X_test)
 plt.scatter(y_test, y_pred)
 plt.xlabel('Actual attendance')
 plt.ylabel('Predicted attendance')
-plt.title('Decision Tree MLR: 2 features')
+plt.title('Decision Tree MLR: 3 features')
 plt.show()
 
 meanAbErr = metrics.mean_absolute_error(y_test, y_pred)
